@@ -4,12 +4,13 @@
 #
 Name     : xineramaproto
 Version  : 1.2.1
-Release  : 6
+Release  : 7
 URL      : http://xorg.freedesktop.org/releases/individual/proto/xineramaproto-1.2.1.tar.bz2
 Source0  : http://xorg.freedesktop.org/releases/individual/proto/xineramaproto-1.2.1.tar.bz2
 Summary  : Xinerama extension headers
 Group    : Development/Tools
-License  : MIT
+License  : MIT-Opengroup
+BuildRequires : pkgconfig(xorg-macros)
 
 %description
 X Xinerama Extension
@@ -19,6 +20,7 @@ by a single X server to appear as a single screen.
 %package dev
 Summary: dev components for the xineramaproto package.
 Group: Development
+Provides: xineramaproto-devel
 
 %description dev
 dev components for the xineramaproto package.
@@ -28,10 +30,15 @@ dev components for the xineramaproto package.
 %setup -q -n xineramaproto-1.2.1
 
 %build
+export LANG=C
 %configure --disable-static
-make V=1 %{?_smp_mflags}
+make V=1  %{?_smp_mflags}
 
 %check
+export LANG=C
+export http_proxy=http://127.0.0.1:9/
+export https_proxy=http://127.0.0.1:9/
+export no_proxy=localhost
 make VERBOSE=1 V=1 %{?_smp_mflags} check
 
 %install
@@ -44,4 +51,4 @@ rm -rf %{buildroot}
 %files dev
 %defattr(-,root,root,-)
 /usr/include/X11/extensions/panoramiXproto.h
-/usr/lib64/pkgconfig/*.pc
+/usr/lib64/pkgconfig/xineramaproto.pc
